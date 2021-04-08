@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<demo.simple.addimageview.SquareImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/sp_add_item_bg"
+    android:scaleType="center"
+    android:src="@drawable/ic_add_image_center">
+
+</demo.simple.addimageview.SquareImageView>

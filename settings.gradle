@@ -1,0 +1,3 @@
+include ':add_image_view'
+include ':app'
+rootProject.name = "AddImageView"
