@@ -19,12 +19,21 @@ class AddImageView @JvmOverloads constructor(
     }
 
     var maxCount = Int.MAX_VALUE
+        set(value) {
+            mAdapter.notifyDataSetChanged()
+            field = value
+        }
+
     var spanCount = 3
+        set(value) {
+            layoutManager = GridLayoutManager(context, value)
+            field = value
+        }
 
     private val mItems = mutableListOf<Any>()
     private val mAdapter = Adapter()
 
-    private val mItemViewBinders = mutableMapOf<Int,ItemViewBinder<*, *>>()
+    private val mItemViewBinders = mutableMapOf<Int, ItemViewBinder<*, *>>()
 
     init {
         mItems.add(AddItem())
@@ -32,37 +41,69 @@ class AddImageView @JvmOverloads constructor(
         adapter = mAdapter
     }
 
-    fun <T> register(itemViewBinder: ItemViewBinder<T, *>) {
-        if (itemViewBinder is ImageItemViewBinder) {
-            mItemViewBinders.put(VIEW_TYPE_IMAGE_ITEM, itemViewBinder)
-        }
-        if (itemViewBinder is AddItemViewBinder) {
-            mItemViewBinders.put(VIEW_TYPE_ADD_ITEM, itemViewBinder)
-        }
+    fun register(
+        imageItemViewBinder: ImageItemViewBinder<*>,
+        addItemViewBinder: AddItemViewBinder<*>
+    ) {
+        mItemViewBinders[VIEW_TYPE_IMAGE_ITEM] = imageItemViewBinder
+        mItemViewBinders[VIEW_TYPE_ADD_ITEM] = addItemViewBinder
     }
 
     fun setItems(paths: List<String>) {
         val index = mItems.size - 1
         mItems.addAll(index, paths)
         mAdapter.notifyDataSetChanged()
+
+        checkMaxCount()
     }
 
     fun addItem(path: String) {
         val index = mItems.size - 1
         mItems.add(index, path)
         mAdapter.notifyItemInserted(index)
+
+        checkMaxCount()
     }
 
     fun addItem(paths: List<String>) {
         val index = mItems.size - 1
         mItems.addAll(index, paths)
         mAdapter.notifyItemRangeInserted(index, paths.size)
+
+        checkMaxCount()
     }
 
     fun removeItem(path: String) {
         val index = mItems.indexOf(path)
         mItems.removeAt(index)
         mAdapter.notifyItemRemoved(index)
+
+        checkMinCount()
+    }
+
+    fun getItems(): List<String> {
+        val items = mutableListOf<String>()
+        for (item in mItems) {
+            if (item is String) {
+                items.add(item)
+            }
+        }
+        return items
+    }
+
+    private fun checkMaxCount() {
+        if (mItems.size > maxCount && mItems.last() is AddItem) {
+            val index = mItems.size - 1
+            mItems.removeAt(index)
+            mAdapter.notifyItemRemoved(index)
+        }
+    }
+
+    private fun checkMinCount() {
+        if (mItems.size < maxCount && mItems.last() !is AddItem) {
+            mItems.add(AddItem())
+            mAdapter.notifyItemInserted(mItems.size - 1)
+        }
     }
 
     internal inner class Adapter : RecyclerView.Adapter<ViewHolder>() {
@@ -94,7 +135,6 @@ class AddImageView @JvmOverloads constructor(
             val item = mItems[position]
             val viewType = getItemViewType(position)
             val itemViewBinder = mItemViewBinders[viewType]!! as ItemViewBinder<Any, ViewHolder>
-
 
             itemViewBinder.onBindViewHolder(this@AddImageView, holder, item)
         }
