@@ -25,15 +25,6 @@ class MainActivity : AppCompatActivity() {
             reqPermission()
         }
 
-        addImageView.maxCount = 4
-        addImageView.spanCount = 3
-
-        addImageView.register(
-            InnerImageItemViewBinder(),
-            InnerAddItemViewBinder(onItemClick = {
-                reqPermission()
-            })
-        )
     }
 
     private fun reqPermission() {

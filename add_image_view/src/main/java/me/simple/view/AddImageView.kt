@@ -20,7 +20,7 @@ class AddImageView @JvmOverloads constructor(
 
     var maxCount = Int.MAX_VALUE
         set(value) {
-            mAdapter.notifyDataSetChanged()
+            adapter?.notifyDataSetChanged()
             field = value
         }
 
@@ -30,24 +30,12 @@ class AddImageView @JvmOverloads constructor(
             field = value
         }
 
-    private val mItems = mutableListOf<Any>()
-    private val mAdapter = Adapter()
-
-    private val mItemViewBinders = mutableMapOf<Int, ItemViewBinder<*, *>>()
 
     init {
-        mItems.add(AddItem())
-        layoutManager = GridLayoutManager(context, spanCount)
-        adapter = mAdapter
+
     }
 
-    fun register(
-        imageItemViewBinder: ImageItemViewBinder<*>,
-        addItemViewBinder: AddItemViewBinder<*>
-    ) {
-        mItemViewBinders[VIEW_TYPE_IMAGE_ITEM] = imageItemViewBinder
-        mItemViewBinders[VIEW_TYPE_ADD_ITEM] = addItemViewBinder
-    }
+
 
     fun setItems(paths: List<String>) {
         val index = mItems.size - 1
@@ -106,47 +94,34 @@ class AddImageView @JvmOverloads constructor(
         }
     }
 
-    internal inner class Adapter : RecyclerView.Adapter<ViewHolder>() {
+    internal inner class InnerAdapter : RecyclerView.Adapter<ViewHolder>() {
 
         override fun getItemCount() = mItems.size
 
         override fun getItemViewType(position: Int): Int {
-            if (mItems.isEmpty()) return super.getItemViewType(position)
 
-            if (mItems[position] is AddItem) {
-                return VIEW_TYPE_ADD_ITEM
-            }
-
-            return VIEW_TYPE_IMAGE_ITEM
         }
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
         ): ViewHolder {
-            val layoutInflater = LayoutInflater.from(parent.context)
-            return mItemViewBinders[viewType]!!.onCreateViewHolder(layoutInflater, parent)
+
         }
 
         override fun onBindViewHolder(
             holder: ViewHolder,
             position: Int
         ) {
-            val item = mItems[position]
-            val viewType = getItemViewType(position)
-            val itemViewBinder = mItemViewBinders[viewType]!! as ItemViewBinder<Any, ViewHolder>
 
-            itemViewBinder.onBindViewHolder(this@AddImageView, holder, item)
         }
     }
 
-    abstract class ItemViewBinder<T, VH : ViewHolder> {
-        abstract fun onCreateViewHolder(layoutInflater: LayoutInflater, parent: ViewGroup): VH
+    abstract class Adapter<T> {
+        abstract fun onCreateImageItemViewHolder()
+        abstract fun onBindImageItemViewHolder()
 
-        abstract fun onBindViewHolder(addImageView: AddImageView, holder: VH, item: T)
+        abstract fun onCreateAddItemViewHolder()
+        abstract fun onBindAddItemViewHolder()
     }
-
-    abstract class ImageItemViewBinder<VH : ViewHolder> : ItemViewBinder<String, VH>()
-
-    abstract class AddItemViewBinder<VH : ViewHolder> : ItemViewBinder<AddItem, VH>()
 }
