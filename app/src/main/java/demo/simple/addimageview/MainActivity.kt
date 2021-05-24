@@ -3,6 +3,7 @@ package demo.simple.addimageview
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
@@ -22,11 +23,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         addImageView.maxCount = 9
+        addImageView.onAddViewClickListener = {
+            reqPermission()
+        }
+        addImageView.onItemViewClickListener = { position ->
+            toast(position.toString())
+        }
 
         btnAddImage.setOnClickListener {
             reqPermission()
         }
 
+    }
+
+    private fun toast(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
     private fun reqPermission() {
@@ -57,12 +68,12 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == 110 && resultCode == RESULT_OK) {
             val paths = Matisse.obtainPathResult(data)
 
-//            addImageView.addItem(paths)
+            addImageView.addItem(paths)
 
 //            val path = paths.first()
 //            addImageView.addItem(path)
 
-            addImageView.setItems(paths)
+//            addImageView.setItems(paths)
         }
     }
 }

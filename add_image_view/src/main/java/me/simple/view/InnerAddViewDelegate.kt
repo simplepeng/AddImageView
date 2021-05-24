@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class InnerAddViewDelegate : AddImageView.AddViewDelegate<InnerAddViewDelegate.VH>() {
+
     override fun onCreateViewHolder(parent: ViewGroup): VH {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.aiv_item_add, parent, false)
@@ -19,14 +20,10 @@ class InnerAddViewDelegate : AddImageView.AddViewDelegate<InnerAddViewDelegate.V
         position: Int,
         addImageView: AddImageView
     ) {
-        val vh = holder as VH
-        vh.ivAdd.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "position = ${holder.adapterPosition}", Toast.LENGTH_SHORT)
-                .show()
-        }
+
     }
 
     class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ivAdd = itemView.findViewById<ImageView>(R.id.ivAdd)
+
     }
 }

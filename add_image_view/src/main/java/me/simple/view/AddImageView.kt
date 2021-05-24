@@ -24,8 +24,8 @@ class AddImageView @JvmOverloads constructor(
     private var mItemViewDelegate: ItemViewDelegate<*>? = InnerItemViewDelegate()
     private var mAddViewDelegate: AddViewDelegate<*>? = InnerAddViewDelegate()
 
-    private var onItemViewClickListener: OnClickListener? = null
-    private var onAddViewClickListener: OnClickListener? = null
+    var onItemViewClickListener: ((position: Int, path: String) -> Unit)? = null
+    var onAddViewClickListener: ((position: Int) -> Unit)? = null
 
     /**总共的itemCount*/
     var maxCount = Int.MAX_VALUE
@@ -188,10 +188,11 @@ class AddImageView @JvmOverloads constructor(
             )
 
             holder.itemView.setOnClickListener {
+                val adapterPosition = holder.adapterPosition
                 if (viewType == VIEW_TYPE_ADD_ITEM) {
-                    onAddViewClickListener?.onClick(it)
+                    onAddViewClickListener?.invoke(adapterPosition)
                 } else {
-                    onItemViewClickListener?.onClick(it)
+                    onItemViewClickListener?.invoke(adapterPosition, mItems[adapterPosition])
                 }
             }
         }

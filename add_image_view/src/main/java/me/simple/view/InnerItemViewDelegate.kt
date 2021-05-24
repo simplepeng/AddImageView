@@ -8,6 +8,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
 class InnerItemViewDelegate : AddImageView.ItemViewDelegate<InnerItemViewDelegate.VH>() {
+
     override fun onCreateViewHolder(parent: ViewGroup): VH {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.aiv_item_image, parent, false)
@@ -19,18 +20,16 @@ class InnerItemViewDelegate : AddImageView.ItemViewDelegate<InnerItemViewDelegat
         path: String,
         addImageView: AddImageView
     ) {
-        val vh = holder as VH
-
         val bitmap = BitmapFactory.decodeFile(path)
-        vh.ivCover.setImageBitmap(bitmap)
+        holder.ivCover.setImageBitmap(bitmap)
 
-        vh.ivDel.setOnClickListener {
+        holder.ivDel.setOnClickListener {
             addImageView.removeItem(holder.adapterPosition)
         }
     }
 
     class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ivCover = itemView.findViewById<ImageView>(R.id.ivCover)
-        val ivDel = itemView.findViewById<ImageView>(R.id.ivDel)
+        val ivCover: ImageView = itemView.findViewById(R.id.ivCover)
+        val ivDel: ImageView = itemView.findViewById(R.id.ivDel)
     }
 }
