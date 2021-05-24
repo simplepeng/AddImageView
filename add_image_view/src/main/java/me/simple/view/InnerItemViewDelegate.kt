@@ -16,17 +16,16 @@ class InnerItemViewDelegate : AddImageView.ItemViewDelegate() {
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
-        position: Int,
+        path: String,
         addImageView: AddImageView
     ) {
         val vh = holder as VH
 
-        val path = addImageView.getItems()[position]
         val bitmap = BitmapFactory.decodeFile(path)
         vh.ivCover.setImageBitmap(bitmap)
 
         vh.ivDel.setOnClickListener {
-            addImageView.removeItem(position)
+            addImageView.removeItem(holder.adapterPosition)
         }
     }
 

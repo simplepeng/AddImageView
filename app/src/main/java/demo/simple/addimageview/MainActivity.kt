@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        addImageView.maxCount = 9
+
         btnAddImage.setOnClickListener {
             reqPermission()
         }
@@ -54,7 +56,11 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 110 && resultCode == RESULT_OK) {
             val paths = Matisse.obtainPathResult(data)
+
             addImageView.addItem(paths)
+
+//            val path = paths.first()
+//            addImageView.addItem(path)
         }
     }
 }

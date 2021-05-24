@@ -42,6 +42,16 @@ class AddImageView @JvmOverloads constructor(
     init {
         this.layoutManager = GridLayoutManager(context, spanCount)
         this.adapter = mAdapter
+
+        initAttrs(attrs)
+    }
+
+    private fun initAttrs(attrs: AttributeSet?) {
+        if (attrs == null) return
+        val typeArray = context.obtainStyledAttributes(attrs, R.styleable.AddImageView)
+        maxCount = typeArray.getInt(R.styleable.AddImageView_maxCount, Int.MAX_VALUE)
+        spanCount = typeArray.getInt(R.styleable.AddImageView_spanCount, 3)
+        typeArray.recycle()
     }
 
     /**
@@ -58,7 +68,11 @@ class AddImageView @JvmOverloads constructor(
      */
     fun addItem(path: String) {
         mItems.add(path)
-        adapter?.notifyItemInserted(mItems.lastIndex)
+        if (mItems.size == maxCount) {
+            adapter?.notifyItemChanged(mItems.lastIndex)
+        } else {
+            adapter?.notifyItemInserted(mItems.lastIndex)
+        }
     }
 
     /**
@@ -66,7 +80,8 @@ class AddImageView @JvmOverloads constructor(
      */
     fun addItem(paths: List<String>) {
         mItems.addAll(paths)
-        adapter?.notifyItemRangeInserted(mItems.size - paths.size, paths.size)
+//        adapter?.notifyItemRangeInserted(mItems.size - paths.size, paths.size)
+        adapter?.notifyDataSetChanged()
     }
 
     /**
@@ -93,7 +108,7 @@ class AddImageView @JvmOverloads constructor(
     fun getItems() = mItems
 
     /**
-     *
+     * 注册ItemView的代理
      */
     fun registerItemViewDelegate(delegate: ItemViewDelegate) {
         this.mItemViewDelegate = delegate
@@ -101,7 +116,7 @@ class AddImageView @JvmOverloads constructor(
     }
 
     /**
-     *
+     * 注册AddView的代理
      */
     fun registerAddViewDelegate(delegate: AddViewDelegate) {
         this.mAddViewDelegate = delegate
@@ -146,6 +161,7 @@ class AddImageView @JvmOverloads constructor(
                 mAddViewDelegate!!
             else
                 mItemViewDelegate!!
+
             viewDelegate.onBindViewHolder(holder, position, this@AddImageView)
         }
     }
@@ -159,7 +175,22 @@ class AddImageView @JvmOverloads constructor(
         )
     }
 
-    abstract class ItemViewDelegate : InnerViewDelegate
+    abstract class ItemViewDelegate : InnerViewDelegate {
+        override fun onBindViewHolder(
+            holder: ViewHolder,
+            position: Int,
+            addImageView: AddImageView
+        ) {
+            val path = addImageView.getItems()[holder.adapterPosition]
+            onBindViewHolder(holder, path, addImageView)
+        }
+
+        abstract fun onBindViewHolder(
+            holder: ViewHolder,
+            path: String,
+            addImageView: AddImageView
+        )
+    }
 
     abstract class AddViewDelegate : InnerViewDelegate
 }
