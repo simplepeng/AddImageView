@@ -3,5 +3,6 @@
     <declare-styleable name="AddImageView">
         <attr name="maxCount" format="integer"/>
         <attr name="spanCount" format="integer"/>
+        <attr name="itemGap" format="dimension|reference"/>
     </declare-styleable>
 </resources>

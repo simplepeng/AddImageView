@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         Matisse.from(this)
             .choose(MimeType.ofImage())
             .countable(true)
-            .maxSelectable(10)
+            .maxSelectable(Int.MAX_VALUE)
             .imageEngine(GlideEngine())
             .forResult(110)
     }
@@ -57,10 +57,12 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == 110 && resultCode == RESULT_OK) {
             val paths = Matisse.obtainPathResult(data)
 
-            addImageView.addItem(paths)
+//            addImageView.addItem(paths)
 
 //            val path = paths.first()
 //            addImageView.addItem(path)
+
+            addImageView.setItems(paths)
         }
     }
 }

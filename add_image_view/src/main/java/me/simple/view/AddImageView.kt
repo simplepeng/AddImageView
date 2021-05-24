@@ -2,8 +2,7 @@ package me.simple.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
-import android.view.View
+import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +24,9 @@ class AddImageView @JvmOverloads constructor(
     private var mItemViewDelegate: ItemViewDelegate<*>? = InnerItemViewDelegate()
     private var mAddViewDelegate: AddViewDelegate<*>? = InnerAddViewDelegate()
 
+    private var onItemViewClickListener: OnClickListener? = null
+    private var onAddViewClickListener: OnClickListener? = null
+
     /**总共的itemCount*/
     var maxCount = Int.MAX_VALUE
         set(value) {
@@ -39,6 +41,21 @@ class AddImageView @JvmOverloads constructor(
             field = value
         }
 
+    /**item之间的间距*/
+    var itemGap: Int = 0
+        set(value) {
+            addItemDecoration(ItemGapDecoration(value), 0)
+            field = value
+        }
+
+    open fun dp2px(value: Float): Float {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            value,
+            resources.displayMetrics
+        )
+    }
+
     init {
         this.layoutManager = GridLayoutManager(context, spanCount)
         this.adapter = mAdapter
@@ -51,6 +68,7 @@ class AddImageView @JvmOverloads constructor(
         val typeArray = context.obtainStyledAttributes(attrs, R.styleable.AddImageView)
         maxCount = typeArray.getInt(R.styleable.AddImageView_maxCount, Int.MAX_VALUE)
         spanCount = typeArray.getInt(R.styleable.AddImageView_spanCount, 3)
+        itemGap = typeArray.getDimension(R.styleable.AddImageView_itemGap, dp2px(1f)).toInt()
         typeArray.recycle()
     }
 
@@ -163,7 +181,19 @@ class AddImageView @JvmOverloads constructor(
             else
                 mItemViewDelegate!!
 
-            (viewDelegate as InnerViewDelegate<ViewHolder>).onBindViewHolder(holder, position, this@AddImageView)
+            (viewDelegate as InnerViewDelegate<ViewHolder>).onBindViewHolder(
+                holder,
+                position,
+                this@AddImageView
+            )
+
+            holder.itemView.setOnClickListener {
+                if (viewType == VIEW_TYPE_ADD_ITEM) {
+                    onAddViewClickListener?.onClick(it)
+                } else {
+                    onItemViewClickListener?.onClick(it)
+                }
+            }
         }
     }
 
