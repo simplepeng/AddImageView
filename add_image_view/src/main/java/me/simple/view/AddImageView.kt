@@ -22,8 +22,8 @@ class AddImageView @JvmOverloads constructor(
     private val mItems = mutableListOf<String>()
     private val mAdapter = InnerAdapter()
 
-    private var mItemViewDelegate: ItemViewDelegate? = InnerItemViewDelegate()
-    private var mAddViewDelegate: AddViewDelegate? = InnerAddViewDelegate()
+    private var mItemViewDelegate: ItemViewDelegate<*>? = InnerItemViewDelegate()
+    private var mAddViewDelegate: AddViewDelegate<*>? = InnerAddViewDelegate()
 
     /**总共的itemCount*/
     var maxCount = Int.MAX_VALUE
@@ -110,7 +110,7 @@ class AddImageView @JvmOverloads constructor(
     /**
      * 注册ItemView的代理
      */
-    fun registerItemViewDelegate(delegate: ItemViewDelegate) {
+    fun registerItemViewDelegate(delegate: ItemViewDelegate<*>) {
         this.mItemViewDelegate = delegate
         adapter?.notifyDataSetChanged()
     }
@@ -118,7 +118,7 @@ class AddImageView @JvmOverloads constructor(
     /**
      * 注册AddView的代理
      */
-    fun registerAddViewDelegate(delegate: AddViewDelegate) {
+    fun registerAddViewDelegate(delegate: AddViewDelegate<*>) {
         this.mAddViewDelegate = delegate
         adapter?.notifyDataSetChanged()
     }
@@ -152,6 +152,7 @@ class AddImageView @JvmOverloads constructor(
             return viewDelegate.onCreateViewHolder(parent)
         }
 
+        @Suppress("UNCHECKED_CAST")
         override fun onBindViewHolder(
             holder: ViewHolder,
             position: Int
@@ -162,22 +163,22 @@ class AddImageView @JvmOverloads constructor(
             else
                 mItemViewDelegate!!
 
-            viewDelegate.onBindViewHolder(holder, position, this@AddImageView)
+            (viewDelegate as InnerViewDelegate<ViewHolder>).onBindViewHolder(holder, position, this@AddImageView)
         }
     }
 
-    interface InnerViewDelegate {
-        fun onCreateViewHolder(parent: ViewGroup): ViewHolder
+    interface InnerViewDelegate<VH : ViewHolder> {
+        fun onCreateViewHolder(parent: ViewGroup): VH
         fun onBindViewHolder(
-            holder: ViewHolder,
+            holder: VH,
             position: Int,
             addImageView: AddImageView
         )
     }
 
-    abstract class ItemViewDelegate : InnerViewDelegate {
+    abstract class ItemViewDelegate<VH : ViewHolder> : InnerViewDelegate<VH> {
         override fun onBindViewHolder(
-            holder: ViewHolder,
+            holder: VH,
             position: Int,
             addImageView: AddImageView
         ) {
@@ -186,11 +187,11 @@ class AddImageView @JvmOverloads constructor(
         }
 
         abstract fun onBindViewHolder(
-            holder: ViewHolder,
+            holder: VH,
             path: String,
             addImageView: AddImageView
         )
     }
 
-    abstract class AddViewDelegate : InnerViewDelegate
+    abstract class AddViewDelegate<VH : ViewHolder> : InnerViewDelegate<VH>
 }

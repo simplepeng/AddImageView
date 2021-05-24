@@ -7,15 +7,15 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class InnerAddViewDelegate : AddImageView.AddViewDelegate() {
-    override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+class InnerAddViewDelegate : AddImageView.AddViewDelegate<InnerAddViewDelegate.VH>() {
+    override fun onCreateViewHolder(parent: ViewGroup): VH {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.aiv_item_add, parent, false)
         return VH(itemView)
     }
 
     override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
+        holder:VH,
         position: Int,
         addImageView: AddImageView
     ) {
