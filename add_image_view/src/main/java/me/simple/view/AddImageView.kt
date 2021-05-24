@@ -77,7 +77,12 @@ class AddImageView @JvmOverloads constructor(
      */
     fun setItems(paths: List<String>) {
         mItems.clear()
-        mItems.addAll(paths)
+        if (paths.size > maxCount) {
+            val subList = paths.subList(0, maxCount)
+            mItems.addAll(subList)
+        } else {
+            mItems.addAll(paths)
+        }
         adapter?.notifyDataSetChanged()
     }
 
@@ -97,8 +102,13 @@ class AddImageView @JvmOverloads constructor(
      * 添加一序列的item
      */
     fun addItem(paths: List<String>) {
-        mItems.addAll(paths)
-//        adapter?.notifyItemRangeInserted(mItems.size - paths.size, paths.size)
+        if (mItems.size + paths.size > maxCount) {
+            val remainCount = maxCount - mItems.size
+            val subList = paths.subList(0, remainCount)
+            mItems.addAll(subList)
+        } else {
+            mItems.addAll(paths)
+        }
         adapter?.notifyDataSetChanged()
     }
 

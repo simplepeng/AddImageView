@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         addImageView.onAddViewClickListener = {
             reqPermission()
         }
-        addImageView.onItemViewClickListener = { position ->
+        addImageView.onItemViewClickListener = { position, path ->
             toast(position.toString())
         }
 
