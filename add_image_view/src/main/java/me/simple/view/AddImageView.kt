@@ -3,6 +3,7 @@ package me.simple.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,110 +19,147 @@ class AddImageView @JvmOverloads constructor(
         const val VIEW_TYPE_ADD_ITEM = 2
     }
 
+    private val mItems = mutableListOf<String>()
+    private val mAdapter = InnerAdapter()
+
+    private var mItemViewDelegate: ItemViewDelegate? = InnerItemViewDelegate()
+    private var mAddViewDelegate: AddViewDelegate? = InnerAddViewDelegate()
+
+    /**总共的itemCount*/
     var maxCount = Int.MAX_VALUE
         set(value) {
             adapter?.notifyDataSetChanged()
             field = value
         }
 
+    /**一排的itemCount*/
     var spanCount = 3
         set(value) {
             layoutManager = GridLayoutManager(context, value)
             field = value
         }
 
-
     init {
-
+        this.layoutManager = GridLayoutManager(context, spanCount)
+        this.adapter = mAdapter
     }
 
-
-
+    /**
+     * 设置数据
+     */
     fun setItems(paths: List<String>) {
-        val index = mItems.size - 1
-        mItems.addAll(index, paths)
-        mAdapter.notifyDataSetChanged()
-
-        checkMaxCount()
+        mItems.clear()
+        mItems.addAll(paths)
+        adapter?.notifyDataSetChanged()
     }
 
+    /**
+     * 添加一个item
+     */
     fun addItem(path: String) {
-        val index = mItems.size - 1
-        mItems.add(index, path)
-        mAdapter.notifyItemInserted(index)
-
-        checkMaxCount()
+        mItems.add(path)
+        adapter?.notifyItemInserted(mItems.lastIndex)
     }
 
+    /**
+     * 添加一序列的item
+     */
     fun addItem(paths: List<String>) {
-        val index = mItems.size - 1
-        mItems.addAll(index, paths)
-        mAdapter.notifyItemRangeInserted(index, paths.size)
-
-        checkMaxCount()
+        mItems.addAll(paths)
+        adapter?.notifyItemRangeInserted(mItems.size - paths.size, paths.size)
     }
 
+    /**
+     * 删除一个item
+     */
     fun removeItem(path: String) {
         val index = mItems.indexOf(path)
+        if (index == -1) return
         mItems.removeAt(index)
-        mAdapter.notifyItemRemoved(index)
-
-        checkMinCount()
+        adapter?.notifyItemRemoved(index)
     }
 
-    fun getItems(): List<String> {
-        val items = mutableListOf<String>()
-        for (item in mItems) {
-            if (item is String) {
-                items.add(item)
-            }
-        }
-        return items
+    /**
+     * 删除一个item
+     */
+    fun removeItem(position: Int) {
+        mItems.removeAt(position)
+        adapter?.notifyItemRemoved(position)
     }
 
-    private fun checkMaxCount() {
-        if (mItems.size > maxCount && mItems.last() is AddItem) {
-            val index = mItems.size - 1
-            mItems.removeAt(index)
-            mAdapter.notifyItemRemoved(index)
-        }
+    /**
+     * 获取数据集
+     */
+    fun getItems() = mItems
+
+    /**
+     *
+     */
+    fun registerItemViewDelegate(delegate: ItemViewDelegate) {
+        this.mItemViewDelegate = delegate
+        adapter?.notifyDataSetChanged()
     }
 
-    private fun checkMinCount() {
-        if (mItems.size < maxCount && mItems.last() !is AddItem) {
-            mItems.add(AddItem())
-            mAdapter.notifyItemInserted(mItems.size - 1)
-        }
+    /**
+     *
+     */
+    fun registerAddViewDelegate(delegate: AddViewDelegate) {
+        this.mAddViewDelegate = delegate
+        adapter?.notifyDataSetChanged()
     }
 
+    /**
+     *
+     */
     internal inner class InnerAdapter : RecyclerView.Adapter<ViewHolder>() {
 
-        override fun getItemCount() = mItems.size
+        override fun getItemCount() = if (mItems.size >= maxCount)
+            maxCount
+        else
+            mItems.size + 1
 
         override fun getItemViewType(position: Int): Int {
-
+            return if (position == itemCount - 1 && mItems.size < maxCount) {
+                VIEW_TYPE_ADD_ITEM
+            } else {
+                VIEW_TYPE_IMAGE_ITEM
+            }
         }
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
         ): ViewHolder {
-
+            val viewDelegate = if (viewType == VIEW_TYPE_ADD_ITEM)
+                mAddViewDelegate!!
+            else
+                mItemViewDelegate!!
+            return viewDelegate.onCreateViewHolder(parent)
         }
 
         override fun onBindViewHolder(
             holder: ViewHolder,
             position: Int
         ) {
-
+            val viewType = getItemViewType(position)
+            val viewDelegate = if (viewType == VIEW_TYPE_ADD_ITEM)
+                mAddViewDelegate!!
+            else
+                mItemViewDelegate!!
+            viewDelegate.onBindViewHolder(holder, position, this@AddImageView)
         }
     }
 
-    abstract class Adapter<T> {
-        abstract fun onCreateImageItemViewHolder()
-        abstract fun onBindImageItemViewHolder()
-
-        abstract fun onCreateAddItemViewHolder()
-        abstract fun onBindAddItemViewHolder()
+    interface InnerViewDelegate {
+        fun onCreateViewHolder(parent: ViewGroup): ViewHolder
+        fun onBindViewHolder(
+            holder: ViewHolder,
+            position: Int,
+            addImageView: AddImageView
+        )
     }
+
+    abstract class ItemViewDelegate : InnerViewDelegate
+
+    abstract class AddViewDelegate : InnerViewDelegate
 }

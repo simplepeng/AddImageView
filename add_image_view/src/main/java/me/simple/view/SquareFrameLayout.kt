@@ -1,15 +1,14 @@
-package demo.simple.addimageview
+package me.simple.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatImageView
+import android.widget.FrameLayout
 
-class SquareImageView @JvmOverloads constructor(
+class SquareFrameLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : AppCompatImageView(context, attrs, defStyleAttr) {
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, widthMeasureSpec)

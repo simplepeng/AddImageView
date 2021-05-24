@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<me.simple.view.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/sp_add_item_bg">
+
+    <ImageView
+        android:id="@+id/ivAdd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center"
+        android:src="@drawable/ic_add_image_center" />
+</me.simple.view.SquareFrameLayout>
