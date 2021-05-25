@@ -18,5 +18,13 @@
             android:id="@+id/ivCover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/ivDel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:padding="10dp"
+            android:src="@drawable/ic_del_star_img" />
     </me.simple.view.SquareFrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
