@@ -43,6 +43,11 @@ class AddImageView @JvmOverloads constructor(
     /** 震动时长 */
     private var vibrateDuration: Long = 100L
 
+    /** 动画的相关配置 */
+    var enableAnimation: Boolean = true
+    var animDuration: Long = 100
+    var scaleValue: Float = 1.1f
+
     /** 总共的itemCount */
     var maxCount = Int.MAX_VALUE
         set(value) {
@@ -91,6 +96,7 @@ class AddImageView @JvmOverloads constructor(
 
     private fun initAttrs(attrs: AttributeSet?) {
         if (attrs == null) return
+
         val typeArray = context.obtainStyledAttributes(attrs, R.styleable.AddImageView)
         maxCount = typeArray.getInt(R.styleable.AddImageView_maxCount, Int.MAX_VALUE)
         spanCount = typeArray.getInt(R.styleable.AddImageView_spanCount, 3)
@@ -100,6 +106,9 @@ class AddImageView @JvmOverloads constructor(
         enableVibrate = typeArray.getBoolean(R.styleable.AddImageView_enableVibrate, true)
         vibrateDuration = typeArray.getInt(R.styleable.AddImageView_vibrateDuration, 100).toLong()
 
+        enableAnimation = typeArray.getBoolean(R.styleable.AddImageView_enableAnimation, true)
+        animDuration = typeArray.getInt(R.styleable.AddImageView_animDuration, 100).toLong()
+        scaleValue = typeArray.getFloat(R.styleable.AddImageView_scaleValue, 1.1f)
         typeArray.recycle()
     }
 
@@ -345,11 +354,13 @@ class AddImageView @JvmOverloads constructor(
      * 开始缩放动画
      */
     private fun startScaleAnim(viewHolder: ViewHolder?) {
+        if (!enableAnimation) return
+
         val itemView = viewHolder?.itemView ?: return
         itemView.animate()
-            .scaleX(1.1f)
-            .scaleY(1.1f)
-            .setDuration(100)
+            .scaleX(scaleValue)
+            .scaleY(scaleValue)
+            .setDuration(animDuration)
             .start()
     }
 
@@ -357,11 +368,13 @@ class AddImageView @JvmOverloads constructor(
      * 取消缩放动画
      */
     private fun cancelScaleAnim(viewHolder: ViewHolder?) {
+        if (!enableAnimation) return
+
         val itemView = viewHolder?.itemView ?: return
         itemView.animate()
             .scaleX(1.0f)
             .scaleY(1.0f)
-            .setDuration(100)
+            .setDuration(animDuration)
             .start()
     }
 
