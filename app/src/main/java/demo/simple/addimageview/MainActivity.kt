@@ -23,6 +23,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         addImageView.maxCount = 9
+
+//        addImageView.registerItemViewDelegate(CustomItemView())
+//        addImageView.registerAddViewDelegate(CustomAddView())
+
         addImageView.onAddViewClickListener = {
             reqPermission()
         }

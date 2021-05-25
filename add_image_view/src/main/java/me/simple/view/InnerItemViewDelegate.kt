@@ -28,7 +28,7 @@ class InnerItemViewDelegate : AddImageView.ItemViewDelegate<InnerItemViewDelegat
         }
     }
 
-    class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ivCover: ImageView = itemView.findViewById(R.id.ivCover)
         val ivDel: ImageView = itemView.findViewById(R.id.ivDel)
     }

@@ -13,7 +13,7 @@ class AddImageView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
-    companion object {
+    internal companion object {
         const val VIEW_TYPE_IMAGE_ITEM = 1
         const val VIEW_TYPE_ADD_ITEM = 2
     }
@@ -208,7 +208,7 @@ class AddImageView @JvmOverloads constructor(
         }
     }
 
-    interface InnerViewDelegate<VH : ViewHolder> {
+    internal interface InnerViewDelegate<VH : ViewHolder> {
         fun onCreateViewHolder(parent: ViewGroup): VH
         fun onBindViewHolder(
             holder: VH,

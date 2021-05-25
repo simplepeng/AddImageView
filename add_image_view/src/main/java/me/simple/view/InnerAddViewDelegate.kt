@@ -16,14 +16,12 @@ class InnerAddViewDelegate : AddImageView.AddViewDelegate<InnerAddViewDelegate.V
     }
 
     override fun onBindViewHolder(
-        holder:VH,
+        holder: VH,
         position: Int,
         addImageView: AddImageView
     ) {
 
     }
 
-    class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    }
+    inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
