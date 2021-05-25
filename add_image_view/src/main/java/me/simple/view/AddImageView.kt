@@ -38,10 +38,10 @@ class AddImageView @JvmOverloads constructor(
     private val mVibrator by lazy { context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator }
 
     /** 是否开启震动 */
-    private var enableVibrate: Boolean = true
+    var enableVibrate: Boolean = true
 
     /** 震动时长 */
-    private var vibrateDuration: Long = 100L
+    var vibrateDuration: Long = 100L
 
     /** 动画的相关配置 */
     var enableAnimation: Boolean = true
