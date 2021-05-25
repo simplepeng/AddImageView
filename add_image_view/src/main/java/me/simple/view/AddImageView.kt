@@ -1,6 +1,7 @@
 package me.simple.view
 
 import android.content.Context
+import android.os.Vibrator
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.ViewGroup
@@ -28,6 +29,17 @@ class AddImageView @JvmOverloads constructor(
     /** 点击事件 */
     var onItemViewClickListener: ((position: Int, path: String) -> Unit)? = null
     var onAddViewClickListener: ((position: Int) -> Unit)? = null
+
+    /** 拖拽排序 */
+    private var mItemTouchHelper: ItemTouchHelper? = null
+
+    private val mVibrator by lazy { context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator }
+
+    /** 是否开启震动 */
+    private var enableVibrator: Boolean = true
+
+    /** 震动时长 */
+    private val vibratorDuration: Long = 100L
 
     /** 总共的itemCount */
     var maxCount = Int.MAX_VALUE
@@ -258,8 +270,6 @@ class AddImageView @JvmOverloads constructor(
      */
     abstract class AddViewDelegate<VH : ViewHolder> : InnerViewDelegate<VH>
 
-    private var mItemTouchHelper: ItemTouchHelper? = null
-
     /**
      * 拖拽的开关
      */
@@ -333,6 +343,8 @@ class AddImageView @JvmOverloads constructor(
      * 震动的方法
      */
     private fun vibrate() {
+        if (!enableVibrator) return
 
+        mVibrator.vibrate(vibratorDuration)
     }
 }
