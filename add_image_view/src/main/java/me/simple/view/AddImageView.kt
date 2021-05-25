@@ -1,11 +1,14 @@
 package me.simple.view
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import android.os.Vibrator
 import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
 import android.view.ViewGroup
+import androidx.customview.view.AbsSavedState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -401,4 +404,25 @@ class AddImageView @JvmOverloads constructor(
 
         mVibrator.vibrate(vibrateDuration)
     }
+
+//    override fun onSaveInstanceState(): Parcelable? {
+//        val superState = super.onSaveInstanceState() ?: return null
+//        val savedState = SaveState(superState)
+//
+//        return savedState
+//    }
+//
+//    override fun onRestoreInstanceState(state: Parcelable?) {
+//        if (state is SaveState){
+//
+//        }
+//        super.onRestoreInstanceState(state)
+//    }
+//
+//    class SaveState : AbsSavedState {
+//
+//        constructor(superState: Parcelable) : super(superState)
+//        constructor(source: Parcel, loader: ClassLoader?) : super(source, loader)
+//
+//    }
 }
