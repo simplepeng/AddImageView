@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="AddImageView">
-        <attr name="maxCount" format="integer"/>
-        <attr name="spanCount" format="integer"/>
-        <attr name="itemGap" format="dimension|reference"/>
+        <attr name="maxCount" format="integer" />
+        <attr name="spanCount" format="integer" />
+        <attr name="itemGap" format="dimension|reference" />
+        <attr name="enableDrag" format="boolean" />
     </declare-styleable>
 </resources>

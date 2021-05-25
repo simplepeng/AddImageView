@@ -3,6 +3,7 @@ package demo.simple.addimageview
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.yanzhenjie.permission.AndPermission
@@ -11,12 +12,15 @@ import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
 import me.simple.view.AddImageView
+import java.lang.StringBuilder
 
 
 class MainActivity : AppCompatActivity() {
 
     private val addImageView by lazy { findViewById<AddImageView>(R.id.addImageView) }
     private val btnAddImage by lazy { findViewById<Button>(R.id.btnAddImage) }
+    private val btnGetItems by lazy { findViewById<Button>(R.id.btnGetItems) }
+    private val tvItems by lazy { findViewById<TextView>(R.id.tvItems) }
 
     private val mImages by lazy {
         mutableListOf(
@@ -58,6 +62,18 @@ class MainActivity : AppCompatActivity() {
             reqPermission()
         }
 
+        btnGetItems.setOnClickListener {
+            getItems()
+        }
+    }
+
+    private fun getItems() {
+        val items = addImageView.getItems()
+        val builder = StringBuilder()
+        for (path in items) {
+            builder.append(path).append("\n")
+        }
+        tvItems.text = builder.toString()
     }
 
     private fun toast(text: String) {

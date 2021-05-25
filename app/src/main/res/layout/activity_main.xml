@@ -20,8 +20,27 @@
         android:id="@+id/btnAddImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="addItem"
+        android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addImageView" />
 
+    <Button
+        android:id="@+id/btnGetItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="getItems"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@id/btnAddImage"
+        app:layout_constraintTop_toBottomOf="@id/addImageView" />
+
+    <TextView
+        android:id="@+id/tvItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnGetItems" />
 </androidx.constraintlayout.widget.ConstraintLayout>

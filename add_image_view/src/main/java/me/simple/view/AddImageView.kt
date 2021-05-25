@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 class AddImageView @JvmOverloads constructor(
@@ -49,6 +50,16 @@ class AddImageView @JvmOverloads constructor(
             field = value
         }
 
+    /** 是否开启拖拽排序 */
+    var enableDrag: Boolean = true
+        set(value) {
+            enableDrag(value)
+            field = value
+        }
+
+    /**
+     *
+     */
     open fun dp2px(value: Float): Float {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
@@ -70,6 +81,7 @@ class AddImageView @JvmOverloads constructor(
         maxCount = typeArray.getInt(R.styleable.AddImageView_maxCount, Int.MAX_VALUE)
         spanCount = typeArray.getInt(R.styleable.AddImageView_spanCount, 3)
         itemGap = typeArray.getDimension(R.styleable.AddImageView_itemGap, dp2px(1f)).toInt()
+        enableDrag = typeArray.getBoolean(R.styleable.AddImageView_enableDrag, true)
         typeArray.recycle()
     }
 
@@ -209,6 +221,9 @@ class AddImageView @JvmOverloads constructor(
         }
     }
 
+    /**
+     *
+     */
     internal interface InnerViewDelegate<VH : ViewHolder> {
         fun onCreateViewHolder(parent: ViewGroup): VH
         fun onBindViewHolder(
@@ -242,4 +257,82 @@ class AddImageView @JvmOverloads constructor(
      * AddView的代理
      */
     abstract class AddViewDelegate<VH : ViewHolder> : InnerViewDelegate<VH>
+
+    private var mItemTouchHelper: ItemTouchHelper? = null
+
+    /**
+     * 拖拽的开关
+     */
+    private fun enableDrag(enable: Boolean) {
+        if (!enable) {
+            mItemTouchHelper?.attachToRecyclerView(null)
+        }
+        mItemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
+            override fun getMovementFlags(
+                recyclerView: RecyclerView,
+                viewHolder: ViewHolder
+            ): Int {
+                if (dragTargetIsAddView(viewHolder)) {
+                    return 0
+                }
+
+                val dragFlags =
+                    ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END
+                val swipeFlags = 0
+                return makeMovementFlags(
+                    dragFlags,
+                    swipeFlags
+                )
+            }
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: ViewHolder,
+                target: ViewHolder
+            ): Boolean {
+                if (dragTargetIsAddView(target)) {
+                    return false
+                }
+
+                vibrate()
+                val fromPosition = viewHolder.adapterPosition
+                val toPosition = target.adapterPosition
+                java.util.Collections.swap(mItems, fromPosition, toPosition)
+                mAdapter.notifyItemMoved(fromPosition, toPosition)
+
+                return true
+            }
+
+            override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
+            }
+
+            override fun onSelectedChanged(viewHolder: ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+                vibrate()
+            }
+        })
+        mItemTouchHelper?.attachToRecyclerView(this)
+    }
+
+    /**
+     *
+     */
+    private fun dragTargetIsAddView(
+        target: ViewHolder
+    ): Boolean {
+        val adapter = adapter ?: return false
+
+        if (mItems.size < maxCount && target.adapterPosition == adapter.itemCount - 1) {
+            return true
+        }
+
+        return false
+    }
+
+    /**
+     * 震动的方法
+     */
+    private fun vibrate() {
+
+    }
 }
