@@ -3,6 +3,7 @@ package me.simple.view
 import android.content.Context
 import android.os.Vibrator
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,6 +17,7 @@ class AddImageView @JvmOverloads constructor(
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
     internal companion object {
+        const val TAG = "AddImageView"
         const val VIEW_TYPE_IMAGE_ITEM = 1
         const val VIEW_TYPE_ADD_ITEM = 2
     }
@@ -36,10 +38,10 @@ class AddImageView @JvmOverloads constructor(
     private val mVibrator by lazy { context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator }
 
     /** 是否开启震动 */
-    private var enableVibrator: Boolean = true
+    private var enableVibrate: Boolean = true
 
     /** 震动时长 */
-    private val vibratorDuration: Long = 100L
+    private var vibrateDuration: Long = 100L
 
     /** 总共的itemCount */
     var maxCount = Int.MAX_VALUE
@@ -93,7 +95,11 @@ class AddImageView @JvmOverloads constructor(
         maxCount = typeArray.getInt(R.styleable.AddImageView_maxCount, Int.MAX_VALUE)
         spanCount = typeArray.getInt(R.styleable.AddImageView_spanCount, 3)
         itemGap = typeArray.getDimension(R.styleable.AddImageView_itemGap, dp2px(1f)).toInt()
+
         enableDrag = typeArray.getBoolean(R.styleable.AddImageView_enableDrag, true)
+        enableVibrate = typeArray.getBoolean(R.styleable.AddImageView_enableVibrate, true)
+        vibrateDuration = typeArray.getInt(R.styleable.AddImageView_vibrateDuration, 100).toLong()
+
         typeArray.recycle()
     }
 
@@ -304,11 +310,14 @@ class AddImageView @JvmOverloads constructor(
                     return false
                 }
 
-                vibrate()
                 val fromPosition = viewHolder.adapterPosition
                 val toPosition = target.adapterPosition
-                java.util.Collections.swap(mItems, fromPosition, toPosition)
-                mAdapter.notifyItemMoved(fromPosition, toPosition)
+                if (fromPosition != toPosition) {
+                    vibrate()
+                    java.util.Collections.swap(mItems, fromPosition, toPosition)
+                    adapter?.notifyItemMoved(fromPosition, toPosition)
+                    return true
+                }
 
                 return true
             }
@@ -318,14 +327,46 @@ class AddImageView @JvmOverloads constructor(
 
             override fun onSelectedChanged(viewHolder: ViewHolder?, actionState: Int) {
                 super.onSelectedChanged(viewHolder, actionState)
-                vibrate()
+                if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                    vibrate()
+                    startScaleAnim(viewHolder)
+                }
+            }
+
+            override fun clearView(recyclerView: RecyclerView, viewHolder: ViewHolder) {
+                super.clearView(recyclerView, viewHolder)
+                cancelScaleAnim(viewHolder)
             }
         })
         mItemTouchHelper?.attachToRecyclerView(this)
     }
 
     /**
-     *
+     * 开始缩放动画
+     */
+    private fun startScaleAnim(viewHolder: ViewHolder?) {
+        val itemView = viewHolder?.itemView ?: return
+        itemView.animate()
+            .scaleX(1.1f)
+            .scaleY(1.1f)
+            .setDuration(100)
+            .start()
+    }
+
+    /**
+     * 取消缩放动画
+     */
+    private fun cancelScaleAnim(viewHolder: ViewHolder?) {
+        val itemView = viewHolder?.itemView ?: return
+        itemView.animate()
+            .scaleX(1.0f)
+            .scaleY(1.0f)
+            .setDuration(100)
+            .start()
+    }
+
+    /**
+     * 拖拽的是否是AddView
      */
     private fun dragTargetIsAddView(
         target: ViewHolder
@@ -343,8 +384,8 @@ class AddImageView @JvmOverloads constructor(
      * 震动的方法
      */
     private fun vibrate() {
-        if (!enableVibrator) return
+        if (!enableVibrate) return
 
-        mVibrator.vibrate(vibratorDuration)
+        mVibrator.vibrate(vibrateDuration)
     }
 }

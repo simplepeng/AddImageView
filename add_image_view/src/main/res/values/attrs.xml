@@ -5,5 +5,7 @@
         <attr name="spanCount" format="integer" />
         <attr name="itemGap" format="dimension|reference" />
         <attr name="enableDrag" format="boolean" />
+        <attr name="enableVibrate" format="boolean" />
+        <attr name="vibrateDuration" format="integer" />
     </declare-styleable>
 </resources>
