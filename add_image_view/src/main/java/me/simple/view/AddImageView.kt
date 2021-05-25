@@ -24,24 +24,25 @@ class AddImageView @JvmOverloads constructor(
     private var mItemViewDelegate: ItemViewDelegate<*>? = InnerItemViewDelegate()
     private var mAddViewDelegate: AddViewDelegate<*>? = InnerAddViewDelegate()
 
+    /** 点击事件 */
     var onItemViewClickListener: ((position: Int, path: String) -> Unit)? = null
     var onAddViewClickListener: ((position: Int) -> Unit)? = null
 
-    /**总共的itemCount*/
+    /** 总共的itemCount */
     var maxCount = Int.MAX_VALUE
         set(value) {
             adapter?.notifyDataSetChanged()
             field = value
         }
 
-    /**一排的itemCount*/
+    /** 一排的itemCount */
     var spanCount = 3
         set(value) {
             layoutManager = GridLayoutManager(context, value)
             field = value
         }
 
-    /**item之间的间距*/
+    /** item之间的间距 */
     var itemGap: Int = 0
         set(value) {
             addItemDecoration(ItemGapDecoration(value), 0)
@@ -152,7 +153,7 @@ class AddImageView @JvmOverloads constructor(
     }
 
     /**
-     *
+     * Rv的Adapter
      */
     internal inner class InnerAdapter : RecyclerView.Adapter<ViewHolder>() {
 
@@ -217,6 +218,9 @@ class AddImageView @JvmOverloads constructor(
         )
     }
 
+    /**
+     * ItemView的代理
+     */
     abstract class ItemViewDelegate<VH : ViewHolder> : InnerViewDelegate<VH> {
         override fun onBindViewHolder(
             holder: VH,
@@ -234,5 +238,8 @@ class AddImageView @JvmOverloads constructor(
         )
     }
 
+    /**
+     * AddView的代理
+     */
     abstract class AddViewDelegate<VH : ViewHolder> : InnerViewDelegate<VH>
 }
