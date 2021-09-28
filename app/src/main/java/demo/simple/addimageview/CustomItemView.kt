@@ -30,9 +30,14 @@ class CustomItemView : AddImageView.ItemViewDelegate<CustomItemView.VH>() {
             .load(path)
             .apply(RequestOptions.bitmapTransform(multi))
             .into(holder.ivCover)
+
+        holder.ivDel.setOnClickListener {
+            addImageView.removeItem(path)
+        }
     }
 
     class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ivCover: ImageView = itemView.findViewById(R.id.ivCover)
+        val ivDel: ImageView = itemView.findViewById(R.id.ivDel)
     }
 }
