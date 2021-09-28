@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemGapDecoration(
+open class ItemGapDecoration(
     private val itemGap: Int
 ) : RecyclerView.ItemDecoration() {
 

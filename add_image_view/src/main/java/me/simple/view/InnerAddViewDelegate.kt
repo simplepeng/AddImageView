@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class InnerAddViewDelegate : AddImageView.AddViewDelegate<InnerAddViewDelegate.VH>() {
+open class InnerAddViewDelegate : AddImageView.AddViewDelegate<InnerAddViewDelegate.VH>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): VH {
         val itemView =
