@@ -18,11 +18,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    //指定不生成BuildConfig.java
+    buildFeatures{
+        buildConfig = false
+    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    api 'androidx.recyclerview:recyclerview:1.1.0'
+    api 'androidx.recyclerview:recyclerview:1.2.1'
 //    api 'com.drakeet.multitype:multitype:4.2.0'
 }
