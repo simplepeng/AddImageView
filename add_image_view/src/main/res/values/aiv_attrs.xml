@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AddImageView">
+        <attr name="aiv_maxCount" format="integer" />
+        <attr name="aiv_spanCount" format="integer" />
+        <attr name="aiv_itemGap" format="dimension|reference" />
+
+        <attr name="aiv_enableDrag" format="boolean" />
+        <attr name="aiv_enableVibrate" format="boolean" />
+        <attr name="aiv_vibrateDuration" format="integer" />
+
+        <attr name="aiv_enableAnimation" format="boolean" />
+        <attr name="aiv_animDuration" format="integer" />
+        <attr name="aiv_scaleValue" format="float" />
+    </declare-styleable>
+</resources>

@@ -1,14 +1,10 @@
 package me.simple.view
 
 import android.content.Context
-import android.os.Parcel
-import android.os.Parcelable
 import android.os.Vibrator
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.ViewGroup
-import androidx.customview.view.AbsSavedState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -101,17 +97,17 @@ open class AddImageView @JvmOverloads constructor(
         if (attrs == null) return
 
         val typeArray = context.obtainStyledAttributes(attrs, R.styleable.AddImageView)
-        maxCount = typeArray.getInt(R.styleable.AddImageView_maxCount, Int.MAX_VALUE)
-        spanCount = typeArray.getInt(R.styleable.AddImageView_spanCount, 3)
-        itemGap = typeArray.getDimension(R.styleable.AddImageView_itemGap, dp2px(1f)).toInt()
+        maxCount = typeArray.getInt(R.styleable.AddImageView_aiv_maxCount, Int.MAX_VALUE)
+        spanCount = typeArray.getInt(R.styleable.AddImageView_aiv_spanCount, 3)
+        itemGap = typeArray.getDimension(R.styleable.AddImageView_aiv_itemGap, dp2px(1f)).toInt()
 
-        enableDrag = typeArray.getBoolean(R.styleable.AddImageView_enableDrag, true)
-        enableVibrate = typeArray.getBoolean(R.styleable.AddImageView_enableVibrate, true)
-        vibrateDuration = typeArray.getInt(R.styleable.AddImageView_vibrateDuration, 100).toLong()
+        enableDrag = typeArray.getBoolean(R.styleable.AddImageView_aiv_enableDrag, true)
+        enableVibrate = typeArray.getBoolean(R.styleable.AddImageView_aiv_enableVibrate, true)
+        vibrateDuration = typeArray.getInt(R.styleable.AddImageView_aiv_vibrateDuration, 100).toLong()
 
-        enableAnimation = typeArray.getBoolean(R.styleable.AddImageView_enableAnimation, true)
-        animDuration = typeArray.getInt(R.styleable.AddImageView_animDuration, 100).toLong()
-        scaleValue = typeArray.getFloat(R.styleable.AddImageView_scaleValue, 1.1f)
+        enableAnimation = typeArray.getBoolean(R.styleable.AddImageView_aiv_enableAnimation, true)
+        animDuration = typeArray.getInt(R.styleable.AddImageView_aiv_animDuration, 100).toLong()
+        scaleValue = typeArray.getFloat(R.styleable.AddImageView_aiv_scaleValue, 1.1f)
         typeArray.recycle()
     }
 

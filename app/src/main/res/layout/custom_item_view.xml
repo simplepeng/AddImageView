@@ -25,6 +25,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:padding="10dp"
-            android:src="@drawable/ic_del_star_img" />
+            android:src="@drawable/aiv_ic_del_star_img" />
     </me.simple.view.SquareFrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
