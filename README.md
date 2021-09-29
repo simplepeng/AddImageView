@@ -8,25 +8,22 @@
 * 支持每行item个数设置
 * 等等
 
-![](files/add_image_view.jpg)
+| 静态图 | 动态图 |
+| ------ | ------ |
+|   ![](files/add_image_view.jpg)     | ![](files/add_image_view.gif) |
+
+
 
 ## 导入依赖
 
 [![](https://jitpack.io/v/simplepeng/AddImageView.svg)](https://jitpack.io/#simplepeng/AddImageView)
 
 ```groovy
-allprojects {
-	repositories {
-		...
-		maven { url 'https://jitpack.io' }
-	}
-}
+maven { url 'https://jitpack.io' }
 ```
 
 ```groovy
-dependencies {
-        implementation 'com.github.simplepeng:AddImageView:v1.0.0'
-}
+implementation 'com.github.simplepeng:AddImageView:v1.0.1'
 ```
 
 ## 如何使用
@@ -116,4 +113,5 @@ fun getItems()
 
 ## 版本迭代
 
+* v1.0.1：修改属性名，防止冲突
 * v1.0.0：首次发布
