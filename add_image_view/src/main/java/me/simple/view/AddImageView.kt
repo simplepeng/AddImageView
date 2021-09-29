@@ -1,5 +1,6 @@
 package me.simple.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Vibrator
 import android.util.AttributeSet
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
+@SuppressLint("NotifyDataSetChanged")
 open class AddImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -103,12 +105,22 @@ open class AddImageView @JvmOverloads constructor(
 
         enableDrag = typeArray.getBoolean(R.styleable.AddImageView_aiv_enableDrag, true)
         enableVibrate = typeArray.getBoolean(R.styleable.AddImageView_aiv_enableVibrate, true)
-        vibrateDuration = typeArray.getInt(R.styleable.AddImageView_aiv_vibrateDuration, 100).toLong()
+        vibrateDuration =
+            typeArray.getInt(R.styleable.AddImageView_aiv_vibrateDuration, 100).toLong()
 
         enableAnimation = typeArray.getBoolean(R.styleable.AddImageView_aiv_enableAnimation, true)
         animDuration = typeArray.getInt(R.styleable.AddImageView_aiv_animDuration, 100).toLong()
         scaleValue = typeArray.getFloat(R.styleable.AddImageView_aiv_scaleValue, 1.1f)
         typeArray.recycle()
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        if (isInEditMode) {
+            this.layoutManager = GridLayoutManager(context, spanCount)
+            this.adapter = mAdapter
+            registerAddViewDelegate(InnerAddViewDelegate())
+        }
     }
 
     /**

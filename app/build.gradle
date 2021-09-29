@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.yanzhenjie:permission:2.0.3'
     implementation 'com.drakeet.multitype:multitype:4.2.0'
     //
-//    implementation project(path: ':add_image_view')
-    implementation 'com.github.simplepeng:AddImageView:v1.0.1'
+    implementation project(path: ':add_image_view')
+//    implementation 'com.github.simplepeng:AddImageView:v1.0.1'
 
 }
