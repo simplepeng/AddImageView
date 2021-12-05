@@ -1,23 +1,36 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'maven-publish'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+            }
+        }
+    }
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdk 31
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 30
+        minSdk 16
+        targetSdk 31
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     //指定不生成BuildConfig.java
     buildFeatures{
         buildConfig = false
@@ -25,8 +38,5 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
     api 'androidx.recyclerview:recyclerview:1.2.1'
-//    api 'com.drakeet.multitype:multitype:4.2.0'
 }
