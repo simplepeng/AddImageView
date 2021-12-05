@@ -2,6 +2,7 @@ package me.simple.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.VibrationAttributes
 import android.os.Vibrator
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -249,7 +250,7 @@ open class AddImageView @JvmOverloads constructor(
             )
 
             holder.itemView.setOnClickListener {
-                val adapterPosition = holder.adapterPosition
+                val adapterPosition = holder.bindingAdapterPosition
                 if (viewType == VIEW_TYPE_ADD_ITEM) {
                     onAddViewClickListener?.invoke(adapterPosition)
                 } else {
@@ -280,7 +281,7 @@ open class AddImageView @JvmOverloads constructor(
             position: Int,
             addImageView: AddImageView
         ) {
-            val path = addImageView.getItems()[holder.adapterPosition]
+            val path = addImageView.getItems()[holder.bindingAdapterPosition]
             onBindViewHolder(holder, path, addImageView)
         }
 
@@ -330,8 +331,8 @@ open class AddImageView @JvmOverloads constructor(
                     return false
                 }
 
-                val fromPosition = viewHolder.adapterPosition
-                val toPosition = target.adapterPosition
+                val fromPosition = viewHolder.bindingAdapterPosition
+                val toPosition = target.bindingAdapterPosition
                 if (fromPosition != toPosition) {
                     vibrate()
                     java.util.Collections.swap(mItems, fromPosition, toPosition)
@@ -397,7 +398,7 @@ open class AddImageView @JvmOverloads constructor(
     ): Boolean {
         val adapter = adapter ?: return false
 
-        if (mItems.size < maxCount && target.adapterPosition == adapter.itemCount - 1) {
+        if (mItems.size < maxCount && target.bindingAdapterPosition == adapter.itemCount - 1) {
             return true
         }
 

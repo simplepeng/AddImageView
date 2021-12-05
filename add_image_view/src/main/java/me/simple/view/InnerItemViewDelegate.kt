@@ -24,7 +24,7 @@ open class InnerItemViewDelegate : AddImageView.ItemViewDelegate<InnerItemViewDe
         holder.ivCover.setImageBitmap(bitmap)
 
         holder.ivDel.setOnClickListener {
-            addImageView.removeItem(holder.adapterPosition)
+            addImageView.removeItem(holder.bindingAdapterPosition)
         }
     }
 
