@@ -24,12 +24,20 @@ class MainActivity : AppCompatActivity() {
 
     private val mImages by lazy {
         mutableListOf(
-            "https://gank.io/images/ce66aa74d78f49919085b2b2808ecc50",
-            "https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c",
-            "https://gank.io/images/0f536c69ada247429b8a9e38d3dba8bb",
-            "https://gank.io/images/ccf0316264d245018fc651cffa6e90de",
-            "https://gank.io/images/95ddb01b6bd34a85aedfda4c9e9bd003",
-            "https://gank.io/images/e92911f5ff9446d5a899b652b1934b93",
+            "https://p.qqan.com/up/2022-2/16454222068823469.jpg",
+            "https://p.qqan.com/up/2022-2/16454222074615293.jpg",
+            "https://p.qqan.com/up/2022-2/16454222079248915.jpg",
+            "https://p.qqan.com/up/2022-2/16454222074882536.jpg",
+            "https://p.qqan.com/up/2022-2/16454222077125944.jpg",
+            "https://p.qqan.com/up/2022-2/16454222079542524.jpg",
+
+//            "https://gank.io/images/ce66aa74d78f49919085b2b2808ecc50",
+//            "https://gank.io/images/02eb8ca3297f4931ab64b7ebd7b5b89c",
+//            "https://gank.io/images/0f536c69ada247429b8a9e38d3dba8bb",
+//            "https://gank.io/images/ccf0316264d245018fc651cffa6e90de",
+//            "https://gank.io/images/95ddb01b6bd34a85aedfda4c9e9bd003",
+//            "https://gank.io/images/e92911f5ff9446d5a899b652b1934b93",
+
 //            "https://gank.io/images/6e57b254da79416bbe58248b570ea85f",
 //            "https://gank.io/images/e0b652d2a0cb46ba888a935c525bd312",
 //            "https://gank.io/images/95ddb01b6bd34a85aedfda4c9e9bd003",

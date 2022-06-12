@@ -3,6 +3,7 @@ package me.simple.view
 import android.content.Context
 import android.os.Vibrator
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
@@ -156,6 +157,7 @@ open class AddImageView @JvmOverloads constructor(
      */
     fun removeItem(path: String) {
         val index = mItems.indexOf(path)
+        Log.d("TTT","index = $index")
         if (index == -1) return
         mItems.removeAt(index)
         adapter?.notifyItemRemoved(index)
@@ -268,6 +270,8 @@ open class AddImageView @JvmOverloads constructor(
             position: Int,
             addImageView: AddImageView
         ) {
+            Log.d("TTT","adapterPosition=${holder.adapterPosition}")
+            Log.d("TTT","bindingAdapterPosition=${holder.bindingAdapterPosition}")
             val path = addImageView.getItems()[holder.adapterPosition]
             onBindViewHolder(holder, path, addImageView)
         }
@@ -317,16 +321,20 @@ open class AddImageView @JvmOverloads constructor(
                 if (dragTargetIsAddView(target)) {
                     return false
                 }
-
-                val fromPosition = viewHolder.adapterPosition
-                val toPosition = target.adapterPosition
+                val fromPosition = viewHolder.absoluteAdapterPosition
+                val toPosition = target.absoluteAdapterPosition
                 if (fromPosition != toPosition) {
                     vibrate()
-                    java.util.Collections.swap(mItems, fromPosition, toPosition)
+                    //移动中的 Item
+                    val movingItem = mItems[fromPosition]
+                    //先删除再添加到移动后的位置
+                    mItems.removeAt(fromPosition)
+                    mItems.add(toPosition,movingItem)
+//                    java.util.Collections.swap(mItems, fromPosition, toPosition)
+
                     adapter?.notifyItemMoved(fromPosition, toPosition)
                     return true
                 }
-
                 return true
             }
 
