@@ -1,6 +1,7 @@
 package demo.simple.addimageview
 
 import android.graphics.Bitmap
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,6 @@ class CustomItemView : AddImageView.ItemViewDelegate<CustomItemView.VH>() {
             .load(path)
             .apply(RequestOptions.bitmapTransform(multi))
             .into(holder.ivCover)
-
         holder.ivDel.setOnClickListener {
             addImageView.removeItem(path)
         }

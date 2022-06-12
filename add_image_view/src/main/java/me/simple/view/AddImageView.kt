@@ -157,7 +157,6 @@ open class AddImageView @JvmOverloads constructor(
      */
     fun removeItem(path: String) {
         val index = mItems.indexOf(path)
-        Log.d("TTT","index = $index")
         if (index == -1) return
         mItems.removeAt(index)
         adapter?.notifyItemRemoved(index)
@@ -270,8 +269,6 @@ open class AddImageView @JvmOverloads constructor(
             position: Int,
             addImageView: AddImageView
         ) {
-            Log.d("TTT","adapterPosition=${holder.adapterPosition}")
-            Log.d("TTT","bindingAdapterPosition=${holder.bindingAdapterPosition}")
             val path = addImageView.getItems()[holder.adapterPosition]
             onBindViewHolder(holder, path, addImageView)
         }
