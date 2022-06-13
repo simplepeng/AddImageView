@@ -24,14 +24,14 @@ class MainActivity : AppCompatActivity() {
     private val tvItems by lazy { findViewById<TextView>(R.id.tvItems) }
 
     private val mImages by lazy {
-        mutableListOf(
-            "https://img0.baidu.com/it/u=962361882,2281204904&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500",
-            "https://img1.baidu.com/it/u=1507025561,3635944319&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=711",
-            "https://img0.baidu.com/it/u=3274713675,3050580903&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500",
-            "https://img0.baidu.com/it/u=3098099923,3369715583&fm=253&fmt=auto&app=120&f=JPEG?w=889&h=500",
-            "https://img0.baidu.com/it/u=2651423003,3415459398&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500",
-            "https://img0.baidu.com/it/u=501412934,626408000&fm=253&fmt=auto&app=120&f=JPEG?w=1024&h=640",
-            "https://img1.baidu.com/it/u=577114546,2771402770&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800"
+        mapOf(
+            "https://img0.baidu.com/it/u=962361882,2281204904&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500" to 0,
+            "https://img1.baidu.com/it/u=1507025561,3635944319&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=711" to 1,
+            "https://img0.baidu.com/it/u=3274713675,3050580903&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500" to 2,
+            "https://img0.baidu.com/it/u=3098099923,3369715583&fm=253&fmt=auto&app=120&f=JPEG?w=889&h=500" to 3,
+            "https://img0.baidu.com/it/u=2651423003,3415459398&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500" to 4,
+            "https://img0.baidu.com/it/u=501412934,626408000&fm=253&fmt=auto&app=120&f=JPEG?w=1024&h=640" to 5,
+            "https://img1.baidu.com/it/u=577114546,2771402770&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800" to 6
         )
     }
 
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         addImageView.registerItemViewDelegate(CustomItemView())
 //        addImageView.registerAddViewDelegate(CustomAddView())
 
-        addImageView.setItems(mImages)
+        addImageView.setItems(mImages.keys.toList())
 
         addImageView.onAddViewClickListener = {
             reqPermission()
@@ -65,11 +65,15 @@ class MainActivity : AppCompatActivity() {
     private fun getItems() {
         val items = addImageView.getItems()
         val builder = StringBuilder()
+        builder.append("\n")
         for (path in items) {
-            builder.append(path).append("\n")
+            builder.append(path)
+                .append(" -- ").append(mImages[path].toString())
+                .append("\n")
         }
-        tvItems.text = builder.toString()
-        Log.d("getItems --- ", builder.toString())
+        val itemsStr = builder.toString()
+        tvItems.text = itemsStr
+        Log.d("getItems --- ", itemsStr)
     }
 
     private fun toast(text: String) {
