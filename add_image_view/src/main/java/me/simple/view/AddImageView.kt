@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.VibrationAttributes
 import android.os.Vibrator
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
@@ -258,7 +259,8 @@ open class AddImageView @JvmOverloads constructor(
             }
         }
     }
-
+  
+  
     /**
      * ViewHolder的基类代理
      */
@@ -330,18 +332,21 @@ open class AddImageView @JvmOverloads constructor(
                     return false
                 }
 
-                val fromPosition = viewHolder.bindingAdapterPosition
-                val toPosition = target.bindingAdapterPosition
+                val fromPosition = viewHolder.absoluteAdapterPosition
+                val toPosition = target.absoluteAdapterPosition
                 if (fromPosition != toPosition) {
                     vibrate()
-//                    java.util.Collections.swap(mItems, fromPosition, toPosition)
+                    //移动中的 Item
                     val movingItem = mItems[fromPosition]
+                    //先删除再添加到移动后的位置
                     mItems.removeAt(fromPosition)
-                    mItems.add(toPosition, movingItem)
+                    mItems.add(toPosition,movingItem)
+//                    java.util.Collections.swap(mItems, fromPosition, toPosition)
+
+
                     adapter?.notifyItemMoved(fromPosition, toPosition)
                     return true
                 }
-
                 return true
             }
 
