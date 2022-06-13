@@ -1,6 +1,8 @@
 package me.simple.view
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.VibrationAttributes
 import android.os.Vibrator
 import android.util.AttributeSet
 import android.util.Log
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
+@SuppressLint("NotifyDataSetChanged")
 open class AddImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -110,6 +113,15 @@ open class AddImageView @JvmOverloads constructor(
         animDuration = typeArray.getInt(R.styleable.AddImageView_aiv_animDuration, 100).toLong()
         scaleValue = typeArray.getFloat(R.styleable.AddImageView_aiv_scaleValue, 1.1f)
         typeArray.recycle()
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        if (isInEditMode) {
+            this.layoutManager = GridLayoutManager(context, spanCount)
+            this.adapter = mAdapter
+            registerAddViewDelegate(InnerAddViewDelegate())
+        }
     }
 
     /**
@@ -238,7 +250,7 @@ open class AddImageView @JvmOverloads constructor(
             )
 
             holder.itemView.setOnClickListener {
-                val adapterPosition = holder.adapterPosition
+                val adapterPosition = holder.bindingAdapterPosition
                 if (viewType == VIEW_TYPE_ADD_ITEM) {
                     onAddViewClickListener?.invoke(adapterPosition)
                 } else {
@@ -247,9 +259,10 @@ open class AddImageView @JvmOverloads constructor(
             }
         }
     }
-
+  
+  
     /**
-     *
+     * ViewHolder的基类代理
      */
     internal interface InnerViewDelegate<VH : ViewHolder> {
         fun onCreateViewHolder(parent: ViewGroup): VH
@@ -269,7 +282,7 @@ open class AddImageView @JvmOverloads constructor(
             position: Int,
             addImageView: AddImageView
         ) {
-            val path = addImageView.getItems()[holder.adapterPosition]
+            val path = addImageView.getItems()[holder.bindingAdapterPosition]
             onBindViewHolder(holder, path, addImageView)
         }
 
@@ -318,6 +331,7 @@ open class AddImageView @JvmOverloads constructor(
                 if (dragTargetIsAddView(target)) {
                     return false
                 }
+
                 val fromPosition = viewHolder.absoluteAdapterPosition
                 val toPosition = target.absoluteAdapterPosition
                 if (fromPosition != toPosition) {
@@ -328,6 +342,7 @@ open class AddImageView @JvmOverloads constructor(
                     mItems.removeAt(fromPosition)
                     mItems.add(toPosition,movingItem)
 //                    java.util.Collections.swap(mItems, fromPosition, toPosition)
+
 
                     adapter?.notifyItemMoved(fromPosition, toPosition)
                     return true
@@ -390,7 +405,7 @@ open class AddImageView @JvmOverloads constructor(
     ): Boolean {
         val adapter = adapter ?: return false
 
-        if (mItems.size < maxCount && target.adapterPosition == adapter.itemCount - 1) {
+        if (mItems.size < maxCount && target.bindingAdapterPosition == adapter.itemCount - 1) {
             return true
         }
 

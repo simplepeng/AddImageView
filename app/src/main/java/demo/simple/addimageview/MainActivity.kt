@@ -2,6 +2,7 @@ package demo.simple.addimageview
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private val tvItems by lazy { findViewById<TextView>(R.id.tvItems) }
 
     private val mImages by lazy {
+
         mutableListOf(
             "https://p.qqan.com/up/2022-2/16454222068823469.jpg",
             "https://p.qqan.com/up/2022-2/16454222074615293.jpg",
@@ -57,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         addImageView.registerItemViewDelegate(CustomItemView())
 //        addImageView.registerAddViewDelegate(CustomAddView())
 
-        addImageView.setItems(mImages)
+        addImageView.setItems(mImages.keys.toList())
 
         addImageView.onAddViewClickListener = {
             reqPermission()
@@ -78,10 +80,15 @@ class MainActivity : AppCompatActivity() {
     private fun getItems() {
         val items = addImageView.getItems()
         val builder = StringBuilder()
+        builder.append("\n")
         for (path in items) {
-            builder.append(path).append("\n")
+            builder.append(path)
+                .append(" -- ").append(mImages[path].toString())
+                .append("\n")
         }
-        tvItems.text = builder.toString()
+        val itemsStr = builder.toString()
+        tvItems.text = itemsStr
+        Log.d("getItems --- ", itemsStr)
     }
 
     private fun toast(text: String) {
