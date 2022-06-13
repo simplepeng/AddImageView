@@ -106,8 +106,7 @@ open class AddImageView @JvmOverloads constructor(
 
         enableDrag = typeArray.getBoolean(R.styleable.AddImageView_aiv_enableDrag, true)
         enableVibrate = typeArray.getBoolean(R.styleable.AddImageView_aiv_enableVibrate, true)
-        vibrateDuration =
-            typeArray.getInt(R.styleable.AddImageView_aiv_vibrateDuration, 100).toLong()
+        vibrateDuration = typeArray.getInt(R.styleable.AddImageView_aiv_vibrateDuration, 100).toLong()
 
         enableAnimation = typeArray.getBoolean(R.styleable.AddImageView_aiv_enableAnimation, true)
         animDuration = typeArray.getInt(R.styleable.AddImageView_aiv_animDuration, 100).toLong()
@@ -261,7 +260,7 @@ open class AddImageView @JvmOverloads constructor(
     }
 
     /**
-     *
+     * ViewHolder的基类代理
      */
     internal interface InnerViewDelegate<VH : ViewHolder> {
         fun onCreateViewHolder(parent: ViewGroup): VH
