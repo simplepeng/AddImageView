@@ -2,6 +2,7 @@ package demo.simple.addimageview
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -24,13 +25,13 @@ class MainActivity : AppCompatActivity() {
 
     private val mImages by lazy {
         mutableListOf(
-            "https://img2.baidu.com/it/u=111010057,1963484761&fm=26&fmt=auto",
-            "https://img0.baidu.com/it/u=680204813,2408273793&fm=26&fmt=auto",
-            "https://img0.baidu.com/it/u=4198545283,538361922&fm=26&fmt=auto",
-            "https://img2.baidu.com/it/u=1042301913,584297321&fm=26&fmt=auto",
-            "https://img0.baidu.com/it/u=3329176626,3830333762&fm=26&fmt=auto",
-            "https://img1.baidu.com/it/u=2199515026,1341231739&fm=26&fmt=auto",
-            "https://img2.baidu.com/it/u=1094955877,138168367&fm=26&fmt=auto"
+            "https://img0.baidu.com/it/u=962361882,2281204904&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500",
+            "https://img1.baidu.com/it/u=1507025561,3635944319&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=711",
+            "https://img0.baidu.com/it/u=3274713675,3050580903&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500",
+            "https://img0.baidu.com/it/u=3098099923,3369715583&fm=253&fmt=auto&app=120&f=JPEG?w=889&h=500",
+            "https://img0.baidu.com/it/u=2651423003,3415459398&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500",
+            "https://img0.baidu.com/it/u=501412934,626408000&fm=253&fmt=auto&app=120&f=JPEG?w=1024&h=640",
+            "https://img1.baidu.com/it/u=577114546,2771402770&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800"
         )
     }
 
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
             builder.append(path).append("\n")
         }
         tvItems.text = builder.toString()
+        Log.d("getItems --- ", builder.toString())
     }
 
     private fun toast(text: String) {

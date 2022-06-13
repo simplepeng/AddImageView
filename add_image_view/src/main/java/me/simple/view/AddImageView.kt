@@ -334,7 +334,10 @@ open class AddImageView @JvmOverloads constructor(
                 val toPosition = target.bindingAdapterPosition
                 if (fromPosition != toPosition) {
                     vibrate()
-                    java.util.Collections.swap(mItems, fromPosition, toPosition)
+//                    java.util.Collections.swap(mItems, fromPosition, toPosition)
+                    val movingItem = mItems[fromPosition]
+                    mItems.removeAt(fromPosition)
+                    mItems.add(toPosition, movingItem)
                     adapter?.notifyItemMoved(fromPosition, toPosition)
                     return true
                 }
