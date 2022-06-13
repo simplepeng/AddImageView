@@ -23,7 +23,7 @@ maven { url 'https://jitpack.io' }
 ```
 
 ```groovy
-implementation 'com.github.simplepeng:AddImageView:v1.0.1'
+implementation 'com.github.simplepeng:AddImageView:v1.0.2'
 ```
 
 ## 如何使用
@@ -112,6 +112,8 @@ fun getItems()
 ```
 
 ## 版本迭代
+
+* v1.0.2:升级gradle，修复[拖拽排序后无法删除的bug](https://github.com/simplepeng/AddImageView/pull/1)，感谢[lindroy](https://github.com/lindroy)。
 
 * v1.0.1：修改属性名，防止冲突
 * v1.0.0：首次发布
